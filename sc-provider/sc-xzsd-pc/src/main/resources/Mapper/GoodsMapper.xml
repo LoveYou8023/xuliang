@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.xzsd.pc.goods.dao.GoodsDao">
+    <!-- 判断商品是否存在-->
+    <select id="countGoods" parameterType="com.xzsd.pc.goods.entity.Goods" resultType="int" >
+  select count(goods_name)
+  from t_goods_detail
+  where
+  is_delete=0
+  and
+    goods_name=#{goodsName}
+
+</select>
+<!-- 新增商品-->
+    <insert id="saveGoods" parameterType="com.xzsd.pc.goods.entity.Goods">
+        insert into t_goods_detail
+      ( goods_code,
+         goods_name,
+--          divide_code,
+--          goods_id,
+--          star_level,
+         is_delete,
+         goods_detail,
+          seller_name,
+           inventory,
+         cost_price,
+         sell_price,
+         avertisement,
+          imageUrl,
+         publishing,
+         author,
+         goods_status,
+--           seller_name,
+--          seller_code,
+         create_time,
+         create_user,
+         update_time,
+          update_user,
+         version
+
+         )
+        values
+           (#{goodsCode},
+            #{goodsName},
+            0,
+            #{goodsDetail},
+            #{sellerName},
+            #{inventory},
+            #{costPrice},
+            #{sellPrice},
+            #{advertising},
+            #{imageUrl},
+            #{publishing},
+            #{author},
+            1,
+            now(),
+            #{createBy},
+            now(),
+            #{lastModifiedBy},
+            0
+           )
+
+    </insert>
+    <!-- 查询商品列表-->
+    <select id="listGoodsByPage" parameterType="com.xzsd.pc.goods.entity.Goods" resultType="com.xzsd.pc.goods.entity.Goods">
+        select
+        a.goods_code AS goodsCode,
+        a.goods_name as goodsName,
+        a.goods_status as goodsStatus,
+        a.is_delete,
+        a.create_time as gmtCreate,
+        a.create_user,
+        a.update_time,
+        a.update_user,
+        a.version
+        from t_goods_detail a
+        where a.is_delete = 0
+        <if test="goodsName != null and goodsName != ''">
+            and a.goods_name like concat('%', #{goodsName}, '%')
+        </if>
+        <if test="goodsStatus != null and goodsStatus != ''">
+            and a.goods_status like concat('%', #{goodsStatus}, '%')
+        </if>
+        <if test="publishing != null and publishing != ''">
+            and a.publishing like concat('%', #{publishing}, '%')
+        </if>
+        <if test="author != null and author != ''">
+            and a.author like concat('%', #{author}, '%')
+        </if>
+        <if test="advertising != null and advertising != ''">
+            and a.advertising like concat('%', #{advertising}, '%')
+        </if>
+        order by create_time desc
+    </select>
+    <!-- 通过商品编号修改商品信息-->
+ <update id="updateGoods" parameterType="com.xzsd.pc.goods.entity.Goods">
+     update t_goods_detail
+     set
+     goods_code=#{goodsCode},
+         goods_name=#{goodsName},
+--          divide_code,
+--          goods_id,
+--          star_level,
+         is_delete=#{isDeleted},
+         goods_detail=#{goodsDetail},
+          seller_name=#{sellerName},
+           inventory=#{inventory},
+         cost_price=#{costPrice},
+         sell_price=#{sellPrice},
+         avertisement=#{advertising},
+          imageUrl=#{imageUrl},
+         publishing=#{publishing},
+         author=#{author},
+         goods_status=#{goodsStatus},
+--           seller_name,
+--          seller_code,
+         update_time=now(),
+          update_user=#{lastModifiedBy},
+         version=version+1
+         where
+    goods_code = #{goodsCode}
+          and version = #{version}
+
+
+
+
+ </update>
+    <!--  删除商品 -->
+    <update id="deleteGoods" parameterType="com.user.entity.UserInfo">
+    update t_goods_detail
+    set
+    is_deleted = 1,
+    update_time = now(),
+        update_user = #{lastModifiedBy},
+    version = version + 1
+    where goods_code in
+    <foreach item="goodsCode" index="index" collection="listCode" open="(" separator="," close=")">
+        #{goodsCode}
+    </foreach></update>
+<select id="getGoodsByGoodsCode" parameterType="com.xzsd.pc.goods.entity.Goods" resultType="com.xzsd.pc.goods.entity.Goods">
+
+select
+  goods_code=#{goodsCode},
+         goods_name as goodsName,
+--          divide_code,
+--          goods_id,
+--          star_level,
+         is_delete as isDeleted,
+         goods_detail as goodsDetail,
+          seller_name as sellerName,
+           inventory as inventory,
+         cost_price as costPrice,
+         sell_price as sellPrice,
+         avertisement as advertising,
+          imageUrl as imageUrl,
+         publishing as publishing,
+         author as author,
+         goods_status as goodsStatus
+--           seller_name,
+--          seller_code,
+
+
+ from t_goods_detail
+ where
+ goods_code=#{goodsCode}
+ and is_deleted = 0
+
+</select>
+
+</mapper>
