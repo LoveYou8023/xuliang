@@ -25,9 +25,9 @@
     #{imageEndTime},
     #{isDeleted},
     #{createBy},
-    #{gmtCreate},
-    #{gmtModified},
+    now(),
     #{lastModifiedBy},
+    now(),
     #{version}
 
    )
@@ -57,6 +57,9 @@
       from
       t_rotation_chart
       where is_deleted=0
+      <if test="gooodsStatus !=null and goodsStatus !=''">
+          and image_status like concat ('%',#{goodsStatus},'%')
+      </if>
     </select>
     <!-- 选择商品列表-->
     <select id="listGoods" parameterType="com.xzsd.pc.goods.entity.Goods" resultMap="com.xzsd.pc.goods.entity.Goods">
