@@ -56,6 +56,7 @@
    stop_time
       from
       t_rotation_chart
+      where is_deleted=0
     </select>
     <!-- 选择商品列表-->
     <select id="listGoods" parameterType="com.xzsd.pc.goods.entity.Goods" resultMap="com.xzsd.pc.goods.entity.Goods">
@@ -67,8 +68,15 @@
         second_classification
         from
         t_goods_detail
-        where goods_code not in
-        (select goods_code from t_rotation_chart)
+        where is_deleted=0
+        <if test="goodsName != null and goodsName != ''">
+            and goods_name like concat('%', #{goodsName}, '%')
+        </if>
+        <if test="goodsCode !=null and goodsCode !=''">
+            and goods_code like concat('%',#{goodsCode},'%')
+        </if>
+        and goods_code not in
+        (select goods_code from t_rotation_chart where is_deleted=0)
     </select>
 
     <!-- 修改轮播图状态-->
