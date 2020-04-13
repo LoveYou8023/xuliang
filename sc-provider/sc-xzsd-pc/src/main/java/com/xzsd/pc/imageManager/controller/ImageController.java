@@ -100,7 +100,7 @@ public class ImageController {
     @PostMapping("listGoods")
     public AppResponse listGoods(Goods goods){
         try {
-            AppResponse appResponse = imageService.listgoods(goods);
+            AppResponse appResponse = imageService.listGoods(goods);
             return appResponse;
         } catch (Exception e) {
             logger.error("轮播图列表查询失败", e);
