@@ -63,6 +63,34 @@ public class RotationChart {
      */
     private String version;
 
+    /**
+     * 页数
+     * @return
+     */
+    private int pageNum;
+
+    /**
+     * 每页显示的条数
+     * @return
+     */
+    private int pageSize;
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     public int getImageStatus() {
         return imageStatus;
     }
