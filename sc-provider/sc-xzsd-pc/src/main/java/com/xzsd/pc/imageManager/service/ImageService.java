@@ -72,4 +72,16 @@ public class ImageService {
         PageInfo<Goods> pageData = new PageInfo<Goods>(listGoods);
         return AppResponse.success("查询成功！",pageData);
     }
+    /**
+     * 轮播图状态修改
+     */
+    @Transactional(rollbackFor =Exception.class)
+    public AppResponse updateStatus(String goodsCode,String Status){
+        List<String> listCode = Arrays.asList(goodsCode.split(","));
+        int count=imageDao.updateStatus(listCode,Status);
+        if(0==count){
+            return AppResponse.success("商品状态修改失败！");
+        }
+        return AppResponse.success("修改成功！");
+    }
 }
