@@ -141,7 +141,7 @@
 <select id="getGoodsByGoodsCode" parameterType="com.xzsd.pc.goods.entity.Goods" resultType="com.xzsd.pc.goods.entity.Goods">
 
 select
-  goods_code=#{goodsCode},
+  goods_code as goodsCode,
          goods_name as goodsName,
 --          divide_code,
 --          goods_id,
@@ -167,5 +167,14 @@ select
  and is_deleted = 0
 
 </select>
+    <!-- 商品上下架-->
+<update id="goodsStatus" parameterType="java.lang.String">
+    update t_goods_detail
+    set goods_status=#{status}
+    where goods_code in
+    <foreach item="goodsCode" index="index" collection="listCode" open="(" separator="," close=")">
+        #{goodsCode}
 
+    </foreach>
+</update>
 </mapper>
