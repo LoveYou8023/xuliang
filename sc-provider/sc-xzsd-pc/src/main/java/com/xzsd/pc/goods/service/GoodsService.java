@@ -103,5 +103,18 @@ public class GoodsService {
      return AppResponse.success("查询成功",goodsInfo);
 
     }
+    /**
+     * 商品上下架
+     * 0表示上架 1表示下架 2
+     */
+    @Transactional(rollbackFor =Exception.class)
+    public AppResponse goodsStatus(String goodsCode,String Status){
+        List<String> listCode = Arrays.asList(goodsCode.split(","));
+        int count=goodsDao.goodsStatus(listCode,Status);
+        if(0==count){
+            return AppResponse.success("商品状态修改失败！");
+        }
+        return AppResponse.success("修改成功！");
+    }
 
 }
