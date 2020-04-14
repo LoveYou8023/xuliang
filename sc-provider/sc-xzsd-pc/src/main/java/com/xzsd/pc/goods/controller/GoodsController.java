@@ -105,7 +105,7 @@ public class GoodsController {
         }
     }
     /**
-     * demo 商品列表(分页)
+     *  商品列表(分页)
      *
      * @param goods
      * @return AppResponse
@@ -122,6 +122,12 @@ public class GoodsController {
             throw e;
         }
     }
+
+    /**
+     * 查询商品详情
+     * @param goodsCode
+     * @return
+     */
     @RequestMapping("/goodsInfo")
     public AppResponse  goodsInfo(String goodsCode){
         try {
@@ -133,5 +139,21 @@ public class GoodsController {
             throw e;
         }
 
+    }
+
+    /**
+     * 商品上下架
+     * @return
+     */
+    @RequestMapping("/goodsStatus")
+    public AppResponse goodsStatus(String goodsCode,String Status){
+        try {
+            AppResponse appResponse = goodsService.goodsStatus(goodsCode,Status);
+            return appResponse;
+        } catch (Exception e) {
+            logger.error("轮播图新增失败", e);
+            System.out.println(e.toString());
+            throw e;
+        }
     }
 }
