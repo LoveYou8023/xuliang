@@ -40,6 +40,9 @@ public interface GoodsDao {
      * 查询商品信息
      */
     Goods getGoodsByGoodsCode( @Param("goodsCode") String goodsCode);
-
+    /**
+     * 商品上下架
+     */
+   int goodsStatus(List<String> listCode,String status);
 
 }
