@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzsd.pc.goodsClassify.dao.ClassifyDao">
+    <!-- 查询商品分类是否存在-->
+    <select id="countGoodsClassify" parameterType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+        select count (divide_name)
+        from t_goods_classification
+        where is_deleted=0
+        and divide_name=#{classifyName}
+    </select>
+    <!-- 新增商品分类-->
+    <insert id="saveGoodsClassify" parameterType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+        insert into t_goods_classification
+        (divide_code,
+        divide_name,
+        comment,
+        divide_code_parent,
+        is_deleted,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        version
+        )
+        values (
+        #{classifyId},
+        #{classifyName},
+        #{classifyComment},
+        #{classifyParent},
+        #{isDeleted},
+        #{createBy},
+        now(),
+        #{lastModifiedBy},
+        now(),
+        0
+
+        );
+    </insert>
+    <!-- 修改商品分类-->
+    <update id="updateGoodsClassify" parameterType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+        update t_goods_classification
+        set
+        divide_name=#{classifyName},
+        comment=#{classifyComment},
+        update_time=now(),
+        version=version+1
+        where
+        divide_code=#{classifyId}
+    </update>
+    <!-- 判断是不是有二级分类-->
+    <select id="isHaveSecond" parameterType="java.lang.String" resultType="int" >
+        select count(divide_code)
+        from t_goods_classification
+        where
+        divide_code_parent=#{classifyId}
+
+
+    </select>
+    <!-- 删除分类-->
+    <update id="deleteClassify" parameterType="java.lang.String">
+        update  t_goods_classification
+        set
+        is_deleted=1
+        where
+        divide_code=#{classifyId}
+    </update>
+    <!--删除一级分类-->
+    <update id="deleteFirstClassify" parameterType="java.lang.String" >
+      update t_goods_classification
+    set
+is_deleted=1
+   where
+   divide_code in ((select divide_code  from (SELECT divide_code from t_goods_classification where divide_code_parent=#{classifyId}) a where divide_code_parent=#{classifyId}))
+    </update>
+   <!--查询商品分类列表 -->
+    <select id="listClassifyInfo" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+    SELECT
+t1.divide_name as classifyName,
+t1.divide_code as classifyId,
+t2.divide_code as secondClassify
+FROM
+t_goods_classification t1
+
+LEFT JOIN t_goods_classification t2
+on t1.divide_code=t2.divide_code_parent
+where t1.divide_code_parent=0
+GROUP BY t1.divide_code
+
+    </select>
+    <!-- 商品分类下拉框-->
+    <select id="listGoodsClassify" parameterType="java.lang.String" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+        select divide_name classifyName,
+        divide_code classifyId
+        from t_goods_classification
+        where divide_code_parent=#{classifyId}
+    </select>
+    <!-- 查询商品详情-->
+    <select id="classifyInfo" parameterType="java.lang.String" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+        select
+       divide_name as classifyName,
+       divide_code as classifyId,
+       divide_code_parent as classifyParent
+       from t_goods_classification
+       where divide_code =#{classifyId}
+    </select>
+</mapper>
