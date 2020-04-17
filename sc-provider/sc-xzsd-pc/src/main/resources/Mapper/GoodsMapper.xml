@@ -127,7 +127,7 @@
 
  </update>
     <!--  删除商品 -->
-    <update id="deleteGoods" parameterType="com.user.entity.UserInfo">
+    <update id="deleteGoods" parameterType="com.xzsd.pc.goods.entity.Goods">
     update t_goods_detail
     set
     is_deleted = 1,

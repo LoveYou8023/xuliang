@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.user.dao.UserDao">
+<mapper namespace="com.xzsd.pc.user.dao.UserDao">
 
     <!--统计用户账号数量-->
-    <select id="countUserAcct" parameterType="com.user.entity.UserInfo" resultType="int">
+    <select id="countUserAcct" parameterType="com.xzsd.pc.user.entity.UserInfo" resultType="int">
         select count(user_acct)
         from t_sys_user
         where is_deleted = 0
@@ -11,7 +11,7 @@
     </select>
 
     <!--新增用户-->
-    <insert id="saveUser" parameterType="com.user.entity.UserInfo">
+    <insert id="saveUser" parameterType="com.xzsd.pc.user.entity.UserInfo">
         insert into t_sys_user
         (user_code,
          user_name,
@@ -30,10 +30,10 @@
          last_modified_by,
          version)
         values
-           (#{userCode},
+           (#{userId},
             #{userName},
             #{userAcct},
-            #{userPwd},
+            #{userPassword},
             #{idCard},
             #{sex},
             #{phone},
@@ -49,12 +49,11 @@
     </insert>
 
     <!--用户列表-->
-    <select id="listUsersByPage" parameterType="com.user.entity.UserInfo" resultType="com.user.entity.UserInfo">
+    <select id="listUsersByPage" parameterType="com.xzsd.pc.user.entity.UserInfo" resultType="com.xzsd.pc.user.entity.UserInfo">
         select
-        a.user_code userCode,
+        a.user_code userId,
         a.user_name userName,
         a.user_acct userAcct,
-        a.user_pwd userPwd,
         a.id_card idCard,
         a.sex sex,
         a.phone,
@@ -75,25 +74,26 @@
         <if test="userName != null and userName != ''">
             and a.user_name like concat('%', #{userName}, '%')
         </if>
+
         order by gmt_create desc
     </select>
 
     <!--删除用户-->
-    <update id="deleteUser" parameterType="com.user.entity.UserInfo">
+    <update id="deleteUser" parameterType="com.xzsd.pc.user.entity.UserInfo">
         update t_sys_user
         set
         is_deleted = 1,
         gmt_modified = now(),
-        last_modified_by = #{userId},
+        last_modified_by = #{userId1},
         version = version + 1
         where user_code in
-        <foreach item="userCode" index="index" collection="listCode" open="(" separator="," close=")">
-            #{userCode}
+        <foreach item="userId" index="index" collection="listCode" open="(" separator="," close=")">
+            #{userId}
         </foreach>
     </update>
 
     <!--修改用户信息-->
-    <update id="updateUser" parameterType="com.user.entity.UserInfo">
+    <update id="updateUser" parameterType="com.xzsd.pc.user.entity.UserInfo">
         update t_sys_user
         set
             user_name    = #{userName},
@@ -111,9 +111,9 @@
     </update>
 
     <!--获取用户信息-->
-    <select id="getUserByUserCode" parameterType="java.lang.String" resultType="com.user.entity.UserInfo">
+    <select id="getUserByUserCode" parameterType="java.lang.String" resultType="com.xzsd.pc.user.entity.UserInfo">
         select
-            user_code userCode,
+            user_code userId,
             user_name userName,
             user_acct userAcct,
             user_pwd userPwd,
@@ -124,7 +124,7 @@
             remark,
             version
         from t_sys_user
-        where user_code = #{userCode}
+        where user_code = #{userId}
         and is_deleted = 0
     </select>
 </mapper>
