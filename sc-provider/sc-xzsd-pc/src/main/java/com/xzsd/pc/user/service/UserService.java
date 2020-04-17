@@ -7,6 +7,7 @@ import com.neusoft.core.restful.AppResponse;
 import com.neusoft.util.StringUtil;
 import com.xzsd.pc.user.dao.UserDao;
 import com.xzsd.pc.user.entity.UserInfo;
+import com.xzsd.pc.utils.PasswordUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,8 +41,10 @@ public class UserService {
         if (0 != countUserAcct) {
             return AppResponse.success("用户账号已存在，请重新输入！");
         }
-        userInfo.setUserCode(StringUtil.getCommonCode(2));
+        userInfo.setUserId(StringUtil.getCommonCode(2));
+        String pwd = PasswordUtils.generatePassword(userInfo.getUserPassword());
         userInfo.setIsDeleted(0);
+        userInfo.setUserPassword(pwd);
         // 新增用户
         int count = userDao.saveUser(userInfo);
         if (0 == count) {
@@ -76,10 +79,10 @@ public class UserService {
      * @Date 2020-04-1
      */
     @Transactional(rollbackFor = Exception.class)
-    public AppResponse deleteUser(String userCode, String userId) {
-        List<String> listCode = Arrays.asList(userCode.split(","));
+    public AppResponse deleteUser(String userId, String userId1) {
+        List<String> listCode = Arrays.asList(userId.split(","));
         // 删除用户
-        int count = userDao.deleteUser(listCode, userId);
+        int count = userDao.deleteUser(listCode, userId1);
         if (0 == count) {
             return AppResponse.bizError("删除失败，请重试！");
         }

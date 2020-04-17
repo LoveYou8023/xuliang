@@ -1,9 +1,6 @@
 package com.xzsd.pc.user.dao;
-
-
 import com.xzsd.pc.user.entity.UserInfo;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 /**
@@ -40,7 +37,7 @@ public interface UserDao {
      * @param userId 更新人
      * @return
      */
-    int deleteUser(List<String> listCode, @Param("userId") String userId);
+    int deleteUser(@Param("listCode") List<String> listCode,  @Param("userId1")String userId1);
 
     /**
      * 修改用户信息
@@ -51,8 +48,8 @@ public interface UserDao {
 
     /**
      * 查询用户信息
-     * @param userCode 用户编号
+     * @param userId 用户编号
      * @return 修改结果
      */
-    UserInfo getUserByUserCode(@Param("userCode") String userCode);
+    UserInfo getUserByUserCode(@Param("userId") String userId);
 }

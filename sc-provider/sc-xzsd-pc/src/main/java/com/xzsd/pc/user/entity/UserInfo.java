@@ -21,7 +21,7 @@ public class UserInfo {
     /**
      * 用户代码
      */
-    private String userCode;
+    private String userId;
     /**
      * 用户名称
      */
@@ -33,7 +33,7 @@ public class UserInfo {
     /**
      * 用户密码
      */
-    private String userPwd;
+    private String userPassword;
     /**
      * 身份证号码
      */
@@ -99,12 +99,12 @@ public class UserInfo {
         this.pageNum = pageNum;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -123,12 +123,12 @@ public class UserInfo {
         this.userAcct = userAcct;
     }
 
-    public String getUserPwd() {
-        return userPwd;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
 
