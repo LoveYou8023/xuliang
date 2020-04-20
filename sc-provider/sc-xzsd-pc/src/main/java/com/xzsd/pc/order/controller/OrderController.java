@@ -1,6 +1,7 @@
 package com.xzsd.pc.order.controller;
 import com.neusoft.core.restful.AppResponse;
 import com.neusoft.security.client.utils.SecurityUtils;
+import com.xzsd.pc.order.entity.OrderDetail;
 import com.xzsd.pc.order.entity.OrderInfo;
 import com.xzsd.pc.order.service.OrderService;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class OrderController {
     @Resource
     private OrderService orderService;
     /**
+     * 订单详情
      * @return
      * @Author linxuliang
      * @Date 2020-04-20
@@ -38,14 +40,14 @@ public class OrderController {
         }
     }
     /**
-     * @param order
+     * 订单列表
      * @Author linxuliang
      * @Date 2020-04-20
      */
     @PostMapping("listOrders")
-    public AppResponse listOrders(OrderInfo order){
+    public AppResponse listOrders(OrderDetail orderId){
         try{
-            return orderService.listOrders(order);
+            return orderService.listOrders(orderId);
         }catch (Exception e){
             logger.error("分页查询订单失败",e);
             System.out.println(e.toString());
@@ -53,6 +55,7 @@ public class OrderController {
         }
     }
     /**
+     * 修改订单
      * @return
      * @Author linxuliang
      * @Date 2020-04-20
