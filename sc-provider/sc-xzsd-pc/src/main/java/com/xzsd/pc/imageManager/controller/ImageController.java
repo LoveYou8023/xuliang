@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @Date 2020-4-10
  */
 @RestController
-@RequestMapping("imageManager")
+@RequestMapping("slideshowHome")
 public class ImageController {
     private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
     @Resource
@@ -27,7 +27,7 @@ public class ImageController {
     /**
      * 轮播图新增
      */
-    @PostMapping("addRotationChart")
+    @PostMapping("addSlideshowHome")
     public AppResponse addRotationChart(RotationChart rotationChart){
 
         try {
@@ -47,7 +47,7 @@ public class ImageController {
      * 轮播图状态修改
      * @return
      */
-    @PostMapping("updateStatus")
+    @PostMapping("updateSlideshowHomeState")
     public AppResponse updateStatus(String goodsCode,String Status){
         try {
             AppResponse appResponse = imageService.updateStatus(goodsCode,Status);
@@ -64,7 +64,7 @@ public class ImageController {
      * @param goodsCode
      * @return
      */
-    @PostMapping("deleteRotationChart")
+    @PostMapping("deleteSlideshowHome")
     public AppResponse deleteRotationChart(String goodsCode){
 
         try {
@@ -80,7 +80,7 @@ public class ImageController {
     /**
      * 轮播图列表查询
      */
-    @PostMapping("listRotationChart")
+    @PostMapping("listSlideshowHome")
     public AppResponse listRotationChart(RotationChart rotationChart){
         try {
             AppResponse appResponse = imageService.listRotationChart(rotationChart);
@@ -103,7 +103,7 @@ public class ImageController {
             AppResponse appResponse = imageService.listGoods(goods);
             return appResponse;
         } catch (Exception e) {
-            logger.error("轮播图列表查询失败", e);
+            logger.error("商品列表查询失败", e);
             System.out.println(e.toString());
             throw e;
         }

@@ -15,28 +15,32 @@ public class RotationChart {
  /**
  * 轮播图地址
  */
-  private String imageUrl;
+  private String imagePath;
 
     /**
      *轮播图排序
      */
-  private  String imageNo;
+  private  String slideshowNum;
     /**
      *轮播图状态
      */
-   private  int imageStatus;
+   private  int slideshowStateId;
     /**
      *有效期起
      */
-    private Date  imageStartTime;
+    private Date  startTime;
+    /**
+     * 首页轮播图编号
+     */
+    private String slideshowId;
     /**
      *有效期止
      */
-    private Date imageEndTime;
+    private Date endTime;
     /**
      *商品编码
      */
-    private String goodsCode;
+    private String goodsId;
     /**
      * 是否删除
      */
@@ -63,40 +67,60 @@ public class RotationChart {
      */
     private String version;
 
-    /**
-     * 页数
-     * @return
-     */
-    private int pageNum;
-
-    /**
-     * 每页显示的条数
-     * @return
-     */
-    private int pageSize;
-
-    public int getPageNum() {
-        return pageNum;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public int getPageSize() {
-        return pageSize;
+    public String getSlideshowNum() {
+        return slideshowNum;
     }
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+    public void setSlideshowNum(String slideshowNum) {
+        this.slideshowNum = slideshowNum;
     }
 
-    public int getImageStatus() {
-        return imageStatus;
+    public int getSlideshowStateId() {
+        return slideshowStateId;
     }
 
-    public void setImageStatus(int imageStatus) {
-        this.imageStatus = imageStatus;
+    public void setSlideshowStateId(int slideshowStateId) {
+        this.slideshowStateId = slideshowStateId;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getSlideshowId() {
+        return slideshowId;
+    }
+
+    public void setSlideshowId(String slideshowId) {
+        this.slideshowId = slideshowId;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
     }
 
     public int getIsDeleted() {
@@ -147,53 +171,35 @@ public class RotationChart {
         this.version = version;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public int getPageNum() {
+        return pageNum;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
     }
 
-    public String getImageNo() {
-        return imageNo;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setImageNo(String imageNo) {
-        this.imageNo = imageNo;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public int getInmageStatus() {
-        return imageStatus;
-    }
+    /**
+     * 页数
+     * @return
+     */
+    private int pageNum;
 
-    public void setInmageStatus(int inmageStatus) {
-        this.imageStatus = inmageStatus;
-    }
+    /**
+     * 每页显示的条数
+     * @return
+     */
+    private int pageSize;
 
-    public Date getImageStartTime() {
-        return imageStartTime;
-    }
 
-    public void setImageStartTime(Date imageStartTime) {
-        this.imageStartTime = imageStartTime;
-    }
-
-    public Date getImageEndTime() {
-        return imageEndTime;
-    }
-
-    public void setImageEndTime(Date imageEndTime) {
-        this.imageEndTime = imageEndTime;
-    }
-
-    public String getGoodsCode() {
-        return goodsCode;
-    }
-
-    public void setGoodsCode(String goodsCode) {
-        this.goodsCode = goodsCode;
-    }
 
 
 }

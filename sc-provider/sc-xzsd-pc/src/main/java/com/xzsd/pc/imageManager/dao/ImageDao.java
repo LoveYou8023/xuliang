@@ -25,7 +25,7 @@ public interface ImageDao {
     /**
      * 修改轮播图的状态
      */
-    int updateStatus(List<String>listStatusCode,@Param("imageStatus") String imageStatus);
+    int updateStatus(@Param("listStatusCode") List<String>listStatusCode,@Param("imageStatus") String imageStatus);
 
     /**
      * 查询轮播图列表
