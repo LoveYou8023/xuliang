@@ -1,12 +1,4 @@
 package com.xzsd.pc.goods.controller;
-
-
-
-
-
-
-
-
 import com.neusoft.core.restful.AppResponse;
 import com.neusoft.security.client.utils.SecurityUtils;
 import com.neusoft.util.AuthUtils;
@@ -18,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 
 /**
@@ -42,7 +33,7 @@ public class GoodsController {
      * @author 林旭亮
      * @Date 2020-04-1
      */
-    @PostMapping("/addgoods")
+    @PostMapping("/addGoods")
     public AppResponse addgoods(Goods goods){
 
         try {
@@ -87,17 +78,17 @@ public class GoodsController {
     /**
      * demo 删除商品
      *
-     * @param goodsCode
+     * @param
      * @return AppResponse
      * @author linxuliang
      * @Date 2020-4-1
      */
     @PostMapping("deleteGoods")
-    public AppResponse deleteGoods(String goodsCode) {
+    public AppResponse deleteGoods(String goodsId) {
         try {
             //获取用户id
             String userId = SecurityUtils.getCurrentUserId();
-            return goodsService.deleteGoods(goodsCode, userId);
+            return goodsService.deleteGoods(goodsId, userId);
         } catch (Exception e) {
             logger.error("商品删除错误", e);
             System.out.println(e.toString());
@@ -125,14 +116,14 @@ public class GoodsController {
 
     /**
      * 查询商品详情
-     * @param goodsCode
+     * @param goodsId
      * @return
      */
-    @RequestMapping("/goodsInfo")
-    public AppResponse  goodsInfo(String goodsCode){
+    @RequestMapping("/getGoods")
+    public AppResponse  getGoods(String goodsId){
         try {
 
-            return goodsService.getGoodsByGoodsCode(goodsCode);
+            return goodsService.getGoods(goodsId);
         } catch (Exception e) {
             logger.error("商品查询失败", e);
             System.out.println(e.toString());
@@ -145,13 +136,27 @@ public class GoodsController {
      * 商品上下架
      * @return
      */
-    @RequestMapping("/goodsStatus")
-    public AppResponse goodsStatus(String goodsCode,String Status){
+    @RequestMapping("updateGoodsShelfState")
+    public AppResponse goodsStatus(String goodsId,String goodsStateId,String version){
         try {
-            AppResponse appResponse = goodsService.goodsStatus(goodsCode,Status);
+            AppResponse appResponse = goodsService.goodsStatus(goodsId,goodsStateId,version);
             return appResponse;
         } catch (Exception e) {
             logger.error("轮播图新增失败", e);
+            System.out.println(e.toString());
+            throw e;
+        }
+    }
+    /**
+     * 商品分类下拉接口
+     */
+    @PostMapping("listGoodsClassify")
+    public AppResponse listGoodsClassify(String classifyId){
+
+        try{
+           return goodsService.listGoodsClassify(classifyId);
+        } catch (Exception e){
+            logger.error("查询失败", e);
             System.out.println(e.toString());
             throw e;
         }
