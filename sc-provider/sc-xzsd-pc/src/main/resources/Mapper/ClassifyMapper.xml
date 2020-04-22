@@ -72,27 +72,65 @@ is_deleted=1
    where
    divide_code in ((select divide_code  from (SELECT divide_code from t_goods_classification where divide_code_parent=#{classifyId}) a where divide_code_parent=#{classifyId}))
     </update>
-   <!--查询商品分类列表 -->
-    <select id="listClassifyInfo" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
-    SELECT
-t1.divide_name as classifyName,
-t1.divide_code as classifyId,
-t2.divide_code as secondClassify
-FROM
-t_goods_classification t1
 
-LEFT JOIN t_goods_classification t2
-on t1.divide_code=t2.divide_code_parent
-where t1.divide_code_parent=0
-GROUP BY t1.divide_code
-
+    <!--查询商品分类列表映射-->
+    <resultMap id="oneClassifyList" type="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
+        <id column="divide_code" property="classifyId" jdbcType="VARCHAR"/>
+        <result column="divide_name" property="classifyName" jdbcType="VARCHAR"/>
+        <result column="divide_code_parent" property="classifyParent" jdbcType="VARCHAR"/>
+        <result column="comment" property="classifyComment" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="VARCHAR"/>
+        <collection property="twoClassifyList" ofType="com.xzsd.pc.goodsClassify.entity.ClassifyVO">
+            <id column="sec_divide_code" property="secClassifyId" jdbcType="VARCHAR"/>
+            <result column="sec_divide_name" property="secClassifyName" jdbcType="VARCHAR"/>
+            <result column="sec_divide_code_parent" property="secClassifyParent" jdbcType="VARCHAR"/>
+            <result column="sec_comment" property="secClassifyComment" jdbcType="VARCHAR"/>
+            <result column="sec_version" property="secVersion" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    <!--查询商品分类列表-->
+    <select id="listClassifyInfo" resultMap="oneClassifyList">
+        select
+            a.divide_code,
+            a.divide_name,
+            a.divide_code_parent,
+            a.comment,
+            a.version,
+            b.divide_code as sec_classify_id,
+            b.divide_name as sec_classify_name,
+            b.divide_code_parent as sec_classify_parent,
+            b.comment as sec_classify_comment,
+            b.version as sec_version
+        from t_goods_classification a
+        left join t_goods_classification b
+        on a.divide_code = b.divide_code_parent
+        where a.divide_code_parent = 0
+        and a.is_deleted = 0
+        and b.is_deleted = 0
+        order by a.create_time desc
     </select>
+<!--   &lt;!&ndash;查询商品分类列表 &ndash;&gt;-->
+<!--    <select id="listClassifyInfo" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">-->
+<!--    SELECT-->
+<!--t1.divide_name as classifyName,-->
+<!--t1.divide_code as classifyId,-->
+<!--t2.divide_code as secondClassify-->
+<!--FROM-->
+<!--t_goods_classification t1-->
+
+<!--LEFT JOIN t_goods_classification t2-->
+<!--on t1.divide_code=t2.divide_code_parent-->
+<!--where t1.divide_code_parent=0-->
+<!--GROUP BY t1.divide_code-->
+
+<!--    </select>-->
     <!-- 商品分类下拉框-->
     <select id="listGoodsClassify" parameterType="java.lang.String" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
         select divide_name classifyName,
         divide_code classifyId
         from t_goods_classification
         where divide_code_parent=#{classifyId}
+        and is_deleted=0
     </select>
     <!-- 查询商品详情-->
     <select id="classifyInfo" parameterType="java.lang.String" resultType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
