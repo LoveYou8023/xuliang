@@ -8,7 +8,7 @@ public interface ClientDao {
     /**
      * 查询客户列表
      */
-    List<UserInfo> listClients(@Param("userName") String userName,
+    List<UserInfo> listClientsByPage(@Param("userName") String userName,
                                @Param("userAcct") String userAcct,
                                @Param("role") String role,
                                @Param("userId") String userId);

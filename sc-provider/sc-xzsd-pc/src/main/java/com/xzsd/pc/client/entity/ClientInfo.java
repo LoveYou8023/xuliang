@@ -101,4 +101,34 @@ public class ClientInfo {
      * 版本号
      */
     private String version;
+    /**
+     * 第几页
+     */
+    private String pageNum;
+    /**
+     * 每页几条
+     */
+    private String pageSize;
+
+    /**
+     * 角色
+     *
+     */
+
+
+    public String getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(String pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public String getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(String pageSize) {
+        this.pageSize = pageSize;
+    }
 }
