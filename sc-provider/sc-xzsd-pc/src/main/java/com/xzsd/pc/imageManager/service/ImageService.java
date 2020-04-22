@@ -24,7 +24,14 @@ public class ImageService {
      */
     @Transactional(rollbackFor=Exception.class)
     public AppResponse saveRotationChart(RotationChart rotationChart){
+        //判断轮播图序号是否存在
+        int countSort = imageDao.countSort(rotationChart);
+        if(0 != countSort) {
+        return AppResponse.bizError("轮播图序号已存在，请重新输入！");
+         }
          rotationChart.setIsDeleted(0);
+         //设置轮播图状态
+         rotationChart.setSlideshowStateId("1");
         int count =imageDao.addChart(rotationChart);
         if (0 == count) {
             return AppResponse.success("新增失败，请重试！");
@@ -34,14 +41,14 @@ public class ImageService {
 
     /**
      * 轮播图删除
-     * @param goodsCode
+     * @param goodsId
      * @param userId
      * @return
      */
     @Transactional(rollbackFor =Exception.class)
-    public  AppResponse deleteChart(String goodsCode,String userId){
+    public  AppResponse deleteChart(String goodsId,String userId){
 
-        List<String> listCode = Arrays.asList(goodsCode.split(","));
+        List<String> listCode = Arrays.asList(goodsId.split(","));
         // 删除商品
         int count = imageDao.deleteChart(listCode, userId);
         if (0 == count) {
