@@ -7,7 +7,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ImageDao {
-
+    /**判断轮播图序号是否存在
+     * countSort
+     */
+     int countSort(RotationChart rotationChart);
     /**
      *
      * 增加轮播图
@@ -21,7 +24,7 @@ public interface ImageDao {
      *  @param listCode 选中的轮播图商品编号集合
      *  @param userId 更新人
      */
-    int deleteChart(List<String> listCode, @Param("userId") String userId);
+    int deleteChart(@Param("listCode") List<String> listCode, @Param("userId") String userId);
     /**
      * 修改轮播图的状态
      */
