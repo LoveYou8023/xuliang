@@ -9,13 +9,13 @@
         b.user_name userName,
         b.sex,
         b.phone,
-        b.mail,
+        b.email mail,
         b.id_card idCard,
-        b.user_id userId
+        b.user_code userId
         FROM
         t_info_client a
-        LEFT JOIN t_sys_user b ON a.user_id = b.user_id
-        AND a.is_delete = 0
+        LEFT JOIN t_sys_user b ON a.user_id = b.user_code
+        where a.is_deleted = 0
         <if test="userName != null and userName != '' ">
             AND b.user_name like concat('%', #{userName},'%')
         </if>
@@ -23,9 +23,9 @@
             AND b.user_acct like concat('%', #{userAcct},'%')
         </if>
         <if test="role == 2">
-            LEFT JOIN t_info_store c ON a.invite_code = c.invite_code
+            LEFT JOIN t_info_store c ON a.invite_code = c.store_invite_code
             AND c.is_deleted = 0
-            WHERE
+           and
             c.user_id = #{userId}
         </if>
         ORDER BY a.create_time DESC
