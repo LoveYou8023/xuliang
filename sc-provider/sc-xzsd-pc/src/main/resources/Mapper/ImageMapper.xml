@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xzsd.pc.imageManager.dao.ImageDao">
+    <!--统计轮播图序号数量-->
+    <select id="countSort" parameterType="com.xzsd.pc.imageManager.entity.RotationChart" resultType="int">
+        select count(sort)
+        from t_rotation_chart
+        where is_deleted = 0
+        and sort = #{slideshowNum}
+
+    </select>
+    <!-- 新增轮播图-->
  <insert id="addChart" parameterType="com.xzsd.pc.imageManager.entity.RotationChart">
      insert into t_rotation_chart
      (sort,
@@ -17,12 +26,12 @@
    version
    )
    values(
-    #{imageNo},
-    #{goodsCode},
-    #{imageUrl},
-    #{imageStatus},
-    #{imageStartTime},
-    #{imageEndTime},
+    #{slideshowNum},
+    #{goodsId},
+    #{slideshowPath},
+    #{slideshowStateId},
+    #{startTime},
+    #{endTime},
     #{isDeleted},
     #{createBy},
     now(),
@@ -36,56 +45,58 @@
     <update id="deleteChart" parameterType="com.xzsd.pc.imageManager.entity.RotationChart">
 
         update t_rotation_chart
-        is_deleted = 1,
+     set   is_deleted = 1,
     update_time = now(),
-        update_user = #{lastModifiedBy},
+        update_user = #{userId},
     version = version + 1
-    where goodsCode in
-    <foreach item="goodsCode" index="index" collection="listCode" open="(" separator="," close=")">
-        #{goodsCode}
+    where goods_code in
+    <foreach item="goodsId" index="index" collection="listCode" open="(" separator="," close=")">
+        #{goodsId}
     </foreach>
     </update>
     <!-- 轮播图列表查询-->
     <select id="listRotationChart" parameterType="com.xzsd.pc.imageManager.entity.RotationChart" resultType="com.xzsd.pc.imageManager.entity.RotationChart">
       select
-      sort,
-     goods_code,
-   image_path,
-   image_status,
-   start_time,
-   stop_time
+      sort slideshowNum,
+     goods_code goodsId,
+   image_path slideshowPath,
+   image_status slideshowStateId,
+   start_time startTime,
+   stop_time endTime
       from
       t_rotation_chart
       where is_deleted=0
-      <if test="gooodsStatus !=null and goodsStatus !=''">
-          and image_status like concat ('%',#{goodsStatus},'%')
+      <if test="slideshowStateId !=null and slideshowStateId !=''">
+          and image_status=#{slideshowStateId}
       </if>
     </select>
     <!-- 选择商品列表-->
     <select id="listGoods" parameterType="com.xzsd.pc.goods.entity.Goods" resultType="com.xzsd.pc.goods.entity.Goods">
         select
-        goods_code,
-        goods_name,
-        goods_status,
-        first_classification,
-        second_classification
+        a.goods_code goodsId,
+        a.goods_name goodsName,
+        a.goods_status goodsStateId,
+        b.divide_name oneClassifyName,
+        c.divide_name twoClassifyName
         from
-        t_goods_detail
-        where is_deleted=0
+        t_goods_detail a
+        LEFT JOIN t_goods_classification b ON a.first_classification = b.divide_code
+        LEFT JOIN t_goods_classification c ON a.second_classification = c.divide_code
+        where a.is_deleted=0
         <if test="goodsName != null and goodsName != ''">
-            and goods_name like concat('%', #{goodsName}, '%')
+            and a.goods_name like concat('%', #{goodsName}, '%')
         </if>
-        <if test="goodsCode !=null and goodsCode !=''">
-            and goods_code like concat('%',#{goodsCode},'%')
+        <if test="goodsId !=null and goodsId !=''">
+            and a.goods_code like concat('%',#{goodsId},'%')
         </if>
-        and goods_code not in
+        and a.goods_code not in
         (select goods_code from t_rotation_chart where is_deleted=0)
     </select>
 
     <!-- 修改轮播图状态-->
     <update id="updateStatus" parameterType="java.lang.String">
         update t_rotation_chart
-        set image_status=#{imageStatus}
+        set image_status=#{slideshowId}
         where goods_code
         in
         <foreach item="goodsCode" index="index" collection="listStatusCode" open="(" separator="," close=")">
@@ -93,4 +104,5 @@
         </foreach>
 
     </update>
+
 </mapper>
