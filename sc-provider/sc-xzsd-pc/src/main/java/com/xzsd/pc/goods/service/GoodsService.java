@@ -8,6 +8,9 @@ import com.neusoft.core.restful.AppResponse;
 import com.neusoft.util.StringUtil;
 import com.xzsd.pc.goods.dao.GoodsDao;
 import com.xzsd.pc.goods.entity.Goods;
+import com.xzsd.pc.goodsClassify.dao.ClassifyDao;
+import com.xzsd.pc.goodsClassify.entity.ClassifyInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,8 @@ import java.util.List;
 public class GoodsService {
     @Resource
     private GoodsDao goodsDao;
+     @Autowired
+    public ClassifyDao classifyDao;
     /**
      * 新增商品
      * @author 林旭亮
@@ -31,7 +36,7 @@ public class GoodsService {
         if (0 != countGoods) {
             return AppResponse.success("商品号已存在，请重新输入商品名称！");
         }
-        goods.setGoodsCode(StringUtil.getCommonCode(2));
+        goods.setGoodsId(StringUtil.getCommonCode(2));
         goods.setIsDeleted(0);
         // 新增商品
         int count = goodsDao.saveGoods(goods);
@@ -98,8 +103,8 @@ public class GoodsService {
      * @author 林旭亮
      * @Date 2020-4-1
      */
-    public AppResponse getGoodsByGoodsCode(String goodsCode){
-     Goods goodsInfo=goodsDao.getGoodsByGoodsCode(goodsCode);
+    public AppResponse getGoods(String goodsId){
+     Goods goodsInfo=goodsDao.getGoodsByGoodsCode(goodsId);
      return AppResponse.success("查询成功",goodsInfo);
 
     }
@@ -107,14 +112,23 @@ public class GoodsService {
      * 商品上下架
      * 0表示上架 1表示下架 2
      */
-    @Transactional(rollbackFor =Exception.class)
-    public AppResponse goodsStatus(String goodsCode,String Status){
-        List<String> listCode = Arrays.asList(goodsCode.split(","));
-        int count=goodsDao.goodsStatus(listCode,Status);
+
+    public AppResponse goodsStatus(String goodsId,String goodsStateId,String version){
+        List<String> listCode = Arrays.asList(goodsId.split(","));
+        int count=goodsDao.goodsStatus(listCode,goodsStateId,version);
         if(0==count){
             return AppResponse.success("商品状态修改失败！");
         }
         return AppResponse.success("修改成功！");
+    }
+    /**
+     * 商品分类下拉框
+     */
+    public AppResponse listGoodsClassify(String classifyId){
+
+       List<ClassifyInfo> list=classifyDao.listGoodsClassify(classifyId);
+
+        return AppResponse.success("查询成功！",list);
     }
 
 }
