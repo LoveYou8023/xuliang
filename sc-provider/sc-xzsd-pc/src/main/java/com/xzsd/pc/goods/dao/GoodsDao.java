@@ -4,6 +4,7 @@ package com.xzsd.pc.goods.dao;
 
 
 import com.xzsd.pc.goods.entity.Goods;
+import com.xzsd.pc.goodsClassify.entity.ClassifyInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,7 +32,7 @@ public interface GoodsDao {
      * @param userId 更新人
      * @return
      */
-    int deleteGoods(List<String> listCode,@Param("userId") String userId);
+    int deleteGoods(@Param("listCode")List<String> listCode,@Param("userId") String userId);
     /**
      * 修改商品
      */
@@ -39,10 +40,12 @@ public interface GoodsDao {
     /**
      * 查询商品信息
      */
-    Goods getGoodsByGoodsCode( @Param("goodsCode") String goodsCode);
+    Goods getGoodsByGoodsCode( @Param("goodsId") String goodsCode);
     /**
      * 商品上下架
      */
-   int goodsStatus(List<String> listCode,String status);
+   int goodsStatus(@Param("listCode") List<String> listCode,@Param("goodsStateId")String goodsStateId,
+                   @Param("version")String version);
+
 
 }
