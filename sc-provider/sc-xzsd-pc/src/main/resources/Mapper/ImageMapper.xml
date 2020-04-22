@@ -69,6 +69,8 @@
       <if test="slideshowStateId !=null and slideshowStateId !=''">
           and image_status=#{slideshowStateId}
       </if>
+      order by
+      sort
     </select>
     <!-- 选择商品列表-->
     <select id="listGoods" parameterType="com.xzsd.pc.goods.entity.Goods" resultType="com.xzsd.pc.goods.entity.Goods">
