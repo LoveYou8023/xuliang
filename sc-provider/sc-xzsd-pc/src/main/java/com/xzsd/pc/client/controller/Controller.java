@@ -33,9 +33,9 @@ public class Controller {
      * @date 2020-04-18
      */
     @PostMapping("listClients")
-    public AppResponse listClients(String userName, String userAcct, String role){
+    public AppResponse listClients(String userName, String userAcct, String role,int pageNum,int pageSize){
         try{
-            return clientService.listClients(userName,userAcct,role);
+            return clientService.listClients(userName,userAcct,role,pageNum,pageSize);
         }catch (Exception e){
             logger.error("查询客户信息失败",e);
             System.out.println(e.toString());
