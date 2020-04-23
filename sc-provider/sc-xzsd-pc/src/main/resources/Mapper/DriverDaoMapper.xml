@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzsd.pc.driver.dao.DriverDao">
-    <!--统计司机数量-->
-    <select id="countDriver"  parameterType="com.driver.entity.DriverInfo" resultType="int" >
- select count(driver_user) from t_driver_info where id_deleted = 0 and driver_user = #{userAcct}
- </select>
+<mapper namespace="com.xzsd.pc.driver.dao">
+
+    <select id="countDriver"  parameterType="com.xzsd.pc.driver.entity.DriverInfo" resultType="int" >
+     select count(driver_user) from t_driver_info where id_deleted = 0 and driver_user = #{userAcct}
+    </select>
     <!--新增司机-->
-    <insert id="addDriver" parameterType="com.driver.entity.DriverInfo" >
+    <insert id="addDriver" parameterType="com.xzsd.pc.driver.entity.DriverInfo" >
  insert into t_sys_user
   ( user_code,
   user_name,
@@ -21,13 +21,12 @@
      id_deleted,
      version)
       values (
-      #{driverId},
+      #{driver_id},
       #{userName},
       #{phone},
       #{imagePath},
        #{userAcct},
-        #{userPassword},
-        #{idCard},
+        #{userPasswor
             now(),
              #{createUser},
               #{driverId},
@@ -60,7 +59,7 @@
 
     <!--查询司机详情-->
 
-    <select id="getDriver"  parameterType="java.lang.String" resultType="com.driver.entity.DriverInfo">
+    <select id="getDriver"  parameterType="java.lang.String" resultType="com.xzsd.pc.driver.entity.DriverInfo">
  select e.user_name userName,
   e.phone phone,
    a.driver_user userAcct,
@@ -81,7 +80,7 @@
 
     <!--分页查询司机接口-->
 
-    <select resultType="com.driver.entity.DriverInfo" parameterType="com.driver.entity.DriverInfo" id="listDrivers">
+    <select resultType="com.xzsd.pc.driver.entity.DriverInfo" parameterType="com.xzsd.pc.driver.entity.DriverInfo" id="listDrivers">
     select driver_code driverId,
      a.user_name userName,
       a.id_card idCard,
@@ -113,7 +112,7 @@
 </select>
 
     <!--修改司机信息-->
-    <update parameterType="com.driver.entity.DriverInfo" id="updateDriver">
+    <update parameterType="com.xzsd.pc.driver.entity.DriverInfo" id="updateDriver">
  update t_driver_info set
 
     city_code = #{provinceId},
@@ -137,8 +136,7 @@
       </update>
 
     <!--删除司机-->
-
-    -<update parameterType="com.driver.entity.DriverInfo" id="deleteDriver">
+    <update parameterType="com.xzsd.pc.driver.entity.DriverInfo" id="deleteDriver">
     update t_driver_info set id_deleted = 1, update_time = now(), update_user = #{userId}, version = version + 1
     where driver_code in
     <foreach close=")" separator="," open="(" collection="listDriver" index="index" item="item"> #{item} </foreach>;
@@ -146,5 +144,4 @@
     where user_code in
     <foreach close=")" separator="," open="(" collection="listDriver" index="index" item="item"> #{item} </foreach>
 </update>
-
 </mapper>
