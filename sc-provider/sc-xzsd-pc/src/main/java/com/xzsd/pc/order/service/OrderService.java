@@ -1,5 +1,6 @@
 package com.xzsd.pc.order.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neusoft.core.restful.AppResponse;
 import com.neusoft.security.client.utils.SecurityUtils;
@@ -26,7 +27,7 @@ public class OrderService {
      * 订单列表查询
      */
     public AppResponse listOrders(OrderDetail orderDetail){
-        orderDetail.setUpdateUser(SecurityUtils.getCurrentUserId());
+        PageHelper.startPage(orderDetail.getPageNum(), orderDetail.getPageSize());
         List<OrderDetail> list=orderDao.listOrdersByPage(orderDetail);
         // 包装Page对象
         PageInfo<OrderDetail> pageData = new PageInfo<OrderDetail>(list);
