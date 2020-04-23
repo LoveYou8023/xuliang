@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xzsd.pc.goodsClassify.dao.ClassifyDao">
     <!-- 查询商品分类是否存在-->
-    <select id="countGoodsClassify" parameterType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo">
-        select count (divide_name)
+    <select id="countGoodsClassify" parameterType="com.xzsd.pc.goodsClassify.entity.ClassifyInfo" resultType="int">
+        select count(divide_name)
         from t_goods_classification
         where is_deleted=0
         and divide_name=#{classifyName}
@@ -96,10 +96,10 @@ is_deleted=1
             a.divide_code_parent,
             a.comment,
             a.version,
-            b.divide_code as sec_classify_id,
-            b.divide_name as sec_classify_name,
-            b.divide_code_parent as sec_classify_parent,
-            b.comment as sec_classify_comment,
+            b.divide_code as sec_divide_code,
+            b.divide_name as sec_divide_name,
+            b.divide_code_parent as sec_divide_code_parent,
+            b.comment as sec_comment,
             b.version as sec_version
         from t_goods_classification a
         left join t_goods_classification b
